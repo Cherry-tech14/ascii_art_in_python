@@ -1,18 +1,22 @@
 import os
 
-def load_banner(name):
-
-    folder_name = "banners"
-
-    file_path = os.path.join(folder_name, name + ".txt")
+def load_banner(banner_name):
+    filename = banner_name + ".txt"
     
-    with open(name + "standard.txt") as file:
-        lines = file.read().split("\n")
-
+    if not os.path.exists(filename):
+        raise FileNotFoundError(f"Could not find banner file: '{filename}'")
+    
+    with open(filename, "r", encoding="utf-8") as f:
+        content = f.read()
+    
+    lines = content.splitlines()
+    
     characters = {}
-    for number in range(32, 127):
-        start = (number - 32) * 9 + 1
-        characters[chr(number)] = lines[start:start + 8]
-    
 
+    for i in range(32, 127):
+        
+        start_line = 1 + (i - 32) * 9
+        char_lines = lines[start_line : start_line + 8]
+        characters[chr(i)] = char_lines
+        
     return characters

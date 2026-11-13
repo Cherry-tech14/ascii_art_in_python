@@ -1,31 +1,35 @@
 from banner import load_banner
 
-def render_banner(text, banner_name="standard"):
-    
+def render_art(text, banner_name="standard"):
+    # Load the character dictionary for the requested banner style
     banner = load_banner(banner_name)
     
+    # Handle literal backslash-n typed in the terminal
     text = text.replace("\\n", "\n")
     
     if text == "":
         return ""
-
-    result = []
-
-    parts = text.split("\n")
+        
+    # Split input text by newlines so multi-line inputs stack correctly
+    lines = text.split("\n")
     
-    for part in parts:
-        if part == "":
-            result.append("")
+    output_rows = []
+    
+    for line in lines:
+        # If a line is empty, just append an empty row
+        if line == "":
+            output_rows.append("")
             continue
-            
-        for row in range(8):
-            line_output = ""
-            for char in part:
+        
+        # Each ASCII character is exactly 8 lines tall (rows 0 to 7)
+        for row_idx in range(8):
+            current_row_str = ""
+            for char in line:
                 if char in banner:
-                    line_output += banner[char][row]
+                    current_row_str += banner[char][row_idx]
                 else:
-                
-                    line_output += banner.get(" ", [""] * 8)[row]
-            result.append(line_output)
-            
-    return "\n".join(result)
+                    # Fallback to a space if a character is missing
+                    current_row_str += banner[" "][row_idx]
+            output_rows.append(current_row_str)
+                    
+    return "\n".join(output_rows)

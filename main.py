@@ -1,21 +1,24 @@
 import sys
-from render import render_banner
+from render import render_art
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python main.py <string> [banner]")
-        return
-
-    text = sys.argv[1]
     
-    # Check if a banner style was provided as the second argument, default to 'standard'
+    if len(sys.argv) < 2:
+        print("Usage: python3 main.py <string> [banner]")
+        return
+        
+    text = sys.argv[1]
     banner_name = "standard"
+    
+
     if len(sys.argv) >= 3:
         banner_name = sys.argv[2]
-
-    # Render and print the ASCII art using the requested banner
-    result = render_banner(text, banner_name)
-    print(result)
+        
+    try:
+        result = render_art(text, banner_name)
+        print(result)
+    except Exception as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
